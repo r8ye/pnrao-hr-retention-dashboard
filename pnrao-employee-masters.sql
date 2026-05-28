@@ -148,7 +148,26 @@ WHERE FullName = ''
 OR FullName = '#N/A';
 
 -- standardizing department
--- MALI JOIN MO ULIT
+
+-- join 
+SELECT 
+	e3.EmployeeID,
+    e3.Department,
+    e3.JobTitle,
+    e2.EmployeeID,
+    e2.Department,
+    e2.JobTitle
+FROM emp_staging3 AS e3
+LEFT JOIN emp_staging2 AS e2
+	ON e3.EmployeeID = e2.EmployeeID;
+    
+UPDATE emp_staging3 e3
+LEFT JOIN emp_staging2 AS e2
+	ON e3.EmployeeID = e2.EmployeeID
+SET e3.Department = e2.Department;
+
+SELECT *
+FROM emp_staging3;
 
     
 

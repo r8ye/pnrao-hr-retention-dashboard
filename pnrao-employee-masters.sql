@@ -148,6 +148,25 @@ WHERE FullName = ''
 OR FullName = '#N/A';
 
 -- standardizing department
+UPDATE emp_staging3
+SET Department = NULL
+WHERE Department = ''
+OR Department = '#N/A';
+
+SELECT *
+FROM emp_staging3
+ORDER BY 3;
+
+SELECT 
+	Department,
+    Jobtitle
+FROM emp_staging3
+WHERE JobTitle LIKE 'Financial';
+
+UPDATE emp_staging3
+SET Department = 'Finance'
+WHERE JobTitle LIKE 'Financial%'
+AND Department IS NULL;
 
 -- join 
 SELECT 
@@ -166,19 +185,90 @@ LEFT JOIN emp_staging2 AS e2
 	ON e3.EmployeeID = e2.EmployeeID
 SET e3.Department = e2.Department;
 
+-- standardizing email
+SELECT
+	EmployeeID,
+    Email,
+    SUBSTRING(EmployeeID, 5, 4),
+    CONCAT('employee.', SUBSTRING(EmployeeID, 5, 4), '@pnrao.com')
+FROM emp_staging3
+ORDER BY 2;
+
+UPDATE emp_staging3
+SET Email = NULL
+WHERE Email = ''
+OR Email = '#N/A';
+
+UPDATE emp_staging3
+SET Email = CONCAT('employee.', SUBSTRING(EmployeeID, 5, 4), '@pnrao.com')
+WHERE Email IS NULL;
+
+-- standardizing gender
 SELECT *
+FROM emp_staging3
+ORDER BY gender;
+
+UPDATE emp_staging3
+SET gender = NULL
+WHERE gender = ''
+OR gender = '#N/A';
+
+-- standardizing hiredate & terminationdate
+SELECT 
+	hiredate,
+    terminationdate,
+    `status`
 FROM emp_staging3;
 
-    
+SELECT 
+	hiredate,
+    terminationdate,
+    `status`
+FROM emp_staging3
+WHERE `status` = 'Active';
 
+UPDATE emp_staging3
+SET TerminationDate = ''
+WHERE `status` = 'Active';
 
+SELECT 
+	hiredate,
+    terminationdate,
+    `status`
+FROM emp_staging3
+WHERE terminationdate IS NOT NULL 
+AND terminationdate != ''
+AND terminationdate != '#N/A';
 
+UPDATE emp_staging3
+SET `status` = 'Terminated'
+WHERE terminationdate IS NOT NULL 
+AND terminationdate != ''
+AND terminationdate != '#N/A';
     
+UPDATE emp_staging3
+SET `status` = ''
+WHERE `status` = '#N/A';
+
+UPDATE emp_staging3
+SET `status` = NULL
+WHERE `status` = ''
+OR `status` = '#N/A';
+
+ALTER TABLE emp_staging3
+MODIFY COLUMN hiredate DATE;
     
-    
-    
-    
-    
-    
-    
+ALTER TABLE emp_staging3
+MODIFY COLUMN terminationdate DATE;
+
+-- deleting unnecessary columns
+ALTER TABLE emp_staging3
+DROP COLUMN id_row_num;
+
+-- row count: 751
+SELECT COUNT(*)
+FROM emp_staging3;
+
+SELECT *
+FROM emp_staging3;
     

@@ -274,7 +274,7 @@ DELETE
 FROM emp_staging3
 WHERE `status` IS NULL;
 
--- row count: 751
+-- row count: 684
 SELECT COUNT(*)
 FROM emp_staging3;
 

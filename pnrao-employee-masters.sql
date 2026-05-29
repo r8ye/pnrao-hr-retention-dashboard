@@ -274,9 +274,19 @@ DELETE
 FROM emp_staging3
 WHERE `status` IS NULL;
 
--- row count: 684
+-- row count
 SELECT COUNT(*)
 FROM emp_staging3;
+
+-- adding tenure column
+ALTER TABLE emp_staging3
+ADD COLUMN tenure INT;
+
+UPDATE emp_staging3
+SET tenure = CASE
+	WHEN `status` = 'Active' THEN DATEDIFF(CURRENT_DATE, hiredate) / 365
+    WHEN `status` = 'Terminated' THEN DATEDIFF(terminationdate, hiredate) / 365
+END;
 
 SELECT *
 FROM emp_staging3;

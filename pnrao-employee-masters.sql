@@ -261,9 +261,18 @@ MODIFY COLUMN hiredate DATE;
 ALTER TABLE emp_staging3
 MODIFY COLUMN terminationdate DATE;
 
--- deleting unnecessary columns
+-- deleting unnecessary data
 ALTER TABLE emp_staging3
 DROP COLUMN id_row_num;
+
+CREATE TABLE emp_no_status
+SELECT *
+FROM emp_staging3
+WHERE `status` IS NULL;
+
+DELETE
+FROM emp_staging3
+WHERE `status` IS NULL;
 
 -- row count: 751
 SELECT COUNT(*)

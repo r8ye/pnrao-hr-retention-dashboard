@@ -1,4 +1,4 @@
-# PNRao HR & Retention Dashboard
+# PNRao HR & Retention Analysis Dashboard
 
 ### Project Description
 
